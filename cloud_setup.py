@@ -8,7 +8,7 @@ MQTT_PASSWORD = os.environ['MQTT_PASSWORD']
 SYSTEM_NAME = os.environ['SYSTEM_NAME']
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
 
-# MQTT Topics (same as before)
+# MQTT Topics
 STATUS_TOPIC = f"iot/{SYSTEM_NAME}/status"
 SENSOR_TOPIC = f"iot/{SYSTEM_NAME}/sensor"
 ACTION_TOPIC = f"iot/{SYSTEM_NAME}/action"
