@@ -1,5 +1,4 @@
 import cv2
-import os
 import ssl
 import time
 import json
