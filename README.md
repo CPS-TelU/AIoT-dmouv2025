@@ -52,7 +52,7 @@ Ensure the `mosquitto` service is now running by typing:
 sudo service mosquitto status
 ```
 
-## 1.2 Install EMQX 
+## 1.2 Install EMQX
 
 The first step is to install `EMQX` which provides an open source MQTT broker.
 This can be installed through their web by signing up as new user. After sign up, you will jump to EMQX Platform where MQTT Connection informations relies.
@@ -62,7 +62,10 @@ Address:
 [broker address].emqxsl.com
 MQTT over TLS/SSL Port: 8883
 WebSocket over TLS/SSL Port: 8084
+CA Certificate
 ```
+
+_REMEMBER_ to use SSL Port over TLS
 
 ```python
 import ssl
@@ -129,4 +132,3 @@ of the service, type:
 ```bash
 sudo systemctl status DMove.service
 ```
-
