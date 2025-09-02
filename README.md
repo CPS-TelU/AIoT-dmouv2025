@@ -4,7 +4,7 @@ AIoT Research Team
 
 # NOTE
 
-for local development _ONLY_ using mosquitto as MQTT Broker
+For local development _ONLY_ using mosquitto as MQTT Broker
 
 # Software Structure
 
@@ -19,7 +19,7 @@ This project was developed on a Raspberry Pi running
 [Raspberry Pi OS](https://www.raspberrypi.org/software/operating-systems/)
 (32-bit or 64-bit) and written in Python version 3.
 The code relies heavily on [Mosquitto MQTT](https://mosquitto.org/)
-to bridge a network of devices through MQTT (a common IoT networking protocol) and backend (express)
+to bridge a network of devices through MQTT (a common IoT networking protocol) and backend (Express JS)
 
 ## Install Mosquitto
 
@@ -112,5 +112,3 @@ of the service, type:
 ```bash
 sudo systemctl status DMove.service
 ```
-
-test akun
