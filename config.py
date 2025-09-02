@@ -1,0 +1,37 @@
+import os
+
+class MQTTConfig:
+    MQTT_BROKER = os.environ['MQTT_BROKER']
+    MQTT_PORT = os.environ['MQTT_PORT']
+    MQTT_USERNAME = os.environ['MQTT_USERNAME']
+    MQTT_PASSWORD = os.environ['MQTT_PASSWORD']
+    SYSTEM_NAME = os.environ['SYSTEM_NAME']
+    
+    STATUS_TOPIC = f"iot/{SYSTEM_NAME}/status"
+    SENSOR_TOPIC = f"iot/{SYSTEM_NAME}/sensor"
+    ACTION_TOPIC = f"iot/{SYSTEM_NAME}/action"
+    SETTINGS_UPDATE_TOPIC = f"iot/{SYSTEM_NAME}/settings/update"
+
+class CameraConfig:
+    SOURCE = "usb0"
+    RESOLUTION_WIDTH = 640
+    RESOLUTION_HEIGHT = 480
+    FPS_BUFFER_SIZE = 50
+
+class MotionDetectionConfig:
+    ENABLED = True
+    DETECTION_DURATION = 1.0
+    MOVEMENT_THRESHOLD = 85.0
+    POSITION_BUFFER_SIZE = 15
+    CONFIDENCE_THRESHOLD = 0.5
+    STABLE_DETECTION_FRAMES = 10
+    MOTION_COOLDOWN = 1.0
+    MIN_MOVEMENT_POINTS = 3
+    RELATIVE_MOVEMENT_THRESHOLD = 0.15
+    KEYPOINT_STABILITY_THRESHOLD = 0.05
+    MIN_STABLE_KEYPOINTS = 5
+    AUTO_OFF_DELAY = 10.0
+
+class DeviceConfig:
+    LAMP_PIN = LED(26)
+    FAN_PIN = LED(19)
