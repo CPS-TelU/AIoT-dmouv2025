@@ -4,7 +4,8 @@ AIoT Research Team
 
 # NOTE
 
-for local development _ONLY_ using mosquitto as MQTT Broker
+For local development _ONLY_ using mosquitto as MQTT Broker
+For Global development use the EMQX Cloud as MQTT Broker
 
 # Software Structure
 
@@ -13,15 +14,15 @@ Separate classes are used for each category of devices, lights,
 fan, status, and automatic/manual interaction (action). These classes provide methods for controlling and reading the state of these devices.
 A timer is used to schedule on and off times for the lights and other devices. Schedule can be controlled by the main app
 
-# Installation
+# Installation (Choose one)
 
 This project was developed on a Raspberry Pi running
 [Raspberry Pi OS](https://www.raspberrypi.org/software/operating-systems/)
 (32-bit or 64-bit) and written in Python version 3.
-The code relies heavily on [Mosquitto MQTT](https://mosquitto.org/)
-to bridge a network of devices through MQTT (a common IoT networking protocol) and backend (express)
+The code relies heavily on [Mosquitto MQTT](https://mosquitto.org/) or [EMQX](htttps://emqx.com)
+to bridge a network of devices through MQTT (a common IoT networking protocol) and backend (node.js)
 
-## Install Mosquitto
+## 1.1 Install Mosquitto
 
 The first step is to install `mosquitto` which provides an open source MQTT broker.
 This can be installed from the command-line as follows:
@@ -51,14 +52,30 @@ Ensure the `mosquitto` service is now running by typing:
 sudo service mosquitto status
 ```
 
+## 1.2 Install EMQX 
+
+The first step is to install `EMQX` which provides an open source MQTT broker.
+This can be installed through their web by signing up as new user. After sign up, you will jump to EMQX Platform where MQTT Connection informations relies.
+
+```bash
+Address:
+[broker address].emqxsl.com
+MQTT over TLS/SSL Port: 8883
+WebSocket over TLS/SSL Port: 8084
+```
+
+```python
+import ssl
+```
+
 ## Setting up the Python control software
 
 Once the MQTT Broker is installed and devices are successfully paired we can setup the
-`all.py` control program itself. This program communicates with devices by
+`dmouv_motion_det_final.py` control program itself. This program communicates with devices by
 sending messages to the MQTT broker which are then bridged to our backend services.
 The control program is written in Python version 3 and uses the
 [paho-mqtt](https://www.eclipse.org/paho/index.php?page=clients/python/index.php) library to send
-MQTT messages. The dependencies for `all.py` can all be installed from the command-line as follows:
+MQTT messages. The dependencies for `dmouv_motion_det_final.py` can all be installed from the command-line as follows:
 
 ```bash
 sudo apt-get install python3-pip
@@ -67,9 +84,9 @@ pip3 install paho-mqtt
 
 ## Configuration
 
-Dmouv includes a `Setup.py` configuration file which should be adjusted to reflect
-your local settings. In particular, you will need to specify the "friendly names" of any devices, and lights you are using along with the IP Address of the MQTT broker for
-reaching the backend services (ideally the broker will be run on the local host).
+Dmouv includes a `config.py` configuration file which should be adjusted to reflect
+your local settings. In particular, you will need to specify the "friendly names" of any devices, and lights you are using along with the Broker Address of the MQTT broker for
+reaching the backend services.
 Furthermore, we can set the right time frame through this file.
 
 ## Launching the program
@@ -77,10 +94,10 @@ Furthermore, we can set the right time frame through this file.
 The program can be launched from the command-line from the installation folder as follows:
 
 ```bash
-python3 all.py
+python3 dmouv_motion_det_final.py
 ```
 
-The `all.py` program may also be automatically launched at boot time as a systemd service.
+The `dmouv_motion_det_final.py` program may also be automatically launched at boot time as a systemd service.
 This service must be configured to wait for the network to come online before starting.
 This can be configured by creating a systemd service file in `/etc/systemd/system/Dmouv.service`
 with the following settings:
@@ -113,4 +130,3 @@ of the service, type:
 sudo systemctl status DMove.service
 ```
 
-test akun
