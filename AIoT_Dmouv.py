@@ -30,18 +30,18 @@ class CameraConfig:
     FPS_BUFFER_SIZE = 50
 
 class MotionDetectionConfig:
-    ENABLED = True
-    DETECTION_DURATION = 1.0
-    MOVEMENT_THRESHOLD = 85.0
-    POSITION_BUFFER_SIZE = 15
-    CONFIDENCE_THRESHOLD = 0.5
-    STABLE_DETECTION_FRAMES = 10
-    MOTION_COOLDOWN = 1.0
-    MIN_MOVEMENT_POINTS = 3
-    RELATIVE_MOVEMENT_THRESHOLD = 0.15
-    KEYPOINT_STABILITY_THRESHOLD = 0.05
-    MIN_STABLE_KEYPOINTS = 5
-    AUTO_OFF_DELAY = 10.0
+    ENABLED = True                             # Aktifkan deteksi gerakan
+    DETECTION_DURATION = 1.0                   # Durasi minimum deteksi (detik)
+    MOVEMENT_THRESHOLD = 85.0                  # Threshold pergerakan posisi (pixel)
+    POSITION_BUFFER_SIZE = 15                  # Ukuran buffer posisi 
+    CONFIDENCE_THRESHOLD = 0.5                 # Keypoint harus >50% confidence
+    STABLE_DETECTION_FRAMES = 10               # Frame minimum untuk deteksi stabil
+    MOTION_COOLDOWN = 1.0                      # Jeda setelah gerakan berhenti
+    MIN_MOVEMENT_POINTS = 3                    # Minimum titik gerakan signifikan
+    RELATIVE_MOVEMENT_THRESHOLD = 0.15         # Threshold gerakan relatif
+    KEYPOINT_STABILITY_THRESHOLD = 0.05        # Threshold stabilitas keypoint
+    MIN_STABLE_KEYPOINTS = 5                   # Minimum keypoint stabil yang diperlukan
+    AUTO_OFF_DELAY = 10.0                      # Delay auto-off setelah tidak ada gerakan
 
 class DeviceConfig:
     LAMP_PIN = 26
@@ -68,7 +68,7 @@ class MotionTracker:
         stable_keypoints = []
         
         for i in range(len(keypoint_data)):
-            if (len(keypoint_data[i]) >= 3 and 
+            if (len(keypoint_data[i]) >= 3 and    # Nilai (x, y, Confidence)
                 keypoint_data[i][2] > MotionDetectionConfig.CONFIDENCE_THRESHOLD):
                 stable_keypoints.append([
                     keypoint_data[i][0], 
@@ -77,7 +77,7 @@ class MotionTracker:
                 ])
         
         return (np.array(stable_keypoints) 
-                if len(stable_keypoints) >= MotionDetectionConfig.MIN_STABLE_KEYPOINTS 
+                if len(stable_keypoints) >= MotionDetectionConfig.MIN_STABLE_KEYPOINTS      # Keypoint confidence >50% + 5 Keypoint yang stabil 
                 else None)
 
     def calculate_pose_center(self, stable_keypoints: Optional[np.ndarray]) -> Optional[Tuple[float, float]]:
@@ -87,7 +87,7 @@ class MotionTracker:
         center_x = np.mean(stable_keypoints[:, 0])
         center_y = np.mean(stable_keypoints[:, 1])
         
-        return (center_x, center_y)
+        return (center_x, center_y)     # rata2 keypoint stabil untuk menentukan titik pusat pose sebagai acuan tracking pergerakan orang.
 
     def calculate_relative_movement(self, 
                                   current_keypoints: Optional[np.ndarray], 
@@ -98,14 +98,14 @@ class MotionTracker:
         if len(current_keypoints) != len(reference_keypoints):
             return 0.0
         
-        total_relative_movement = 0.0
+        total_relative_movement = 0.0        
         valid_comparisons = 0
         
         for i in range(len(current_keypoints)):
             current_point = current_keypoints[i][:2]
             reference_point = reference_keypoints[i][:2]
             
-            distance = np.sqrt(np.sum((current_point - reference_point) ** 2))
+            distance = np.sqrt(np.sum((current_point - reference_point) ** 2))      # Euclidean
             
             reference_distance = np.sqrt(reference_point[0]**2 + reference_point[1]**2)
             if reference_distance > 0:
@@ -113,10 +113,10 @@ class MotionTracker:
                 total_relative_movement += relative_distance
                 valid_comparisons += 1
         
-        return total_relative_movement / valid_comparisons if valid_comparisons > 0 else 0.0
+        return total_relative_movement / valid_comparisons if valid_comparisons > 0 else 0.0        # Pergerakan relatif rata2 antar keypoint yang dinormalisasi untuk menghindari bias posisi pada frame.        
 
     def is_keypoints_stable(self) -> bool:
-        if len(self.keypoint_history) < 3:
+        if len(self.keypoint_history) < 3:      # 3 frame terakhir
             return False
         
         recent_keypoints = list(self.keypoint_history)[-3:]
@@ -135,7 +135,7 @@ class MotionTracker:
             if movement > MotionDetectionConfig.KEYPOINT_STABILITY_THRESHOLD:
                 return False
         
-        return True
+        return True     # Kestabilan pose (Membandingkan) pergerakan antar 3 frame terakhir dan dianggap stabil jika pergerakan <5% threshold.
 
     def detect_skeleton_motion(self) -> bool:
         if (not MotionDetectionConfig.ENABLED or 
@@ -146,7 +146,7 @@ class MotionTracker:
         timestamps = list(self.position_timestamps)
         keypoint_history = list(self.keypoint_history)
         
-        if len(keypoint_history) < 2:
+        if len(keypoint_history) < 2:       # Min 2 keypoint untuk analisis
             return False
         
         significant_movements = 0
@@ -173,13 +173,13 @@ class MotionTracker:
             if (relative_movement > MotionDetectionConfig.RELATIVE_MOVEMENT_THRESHOLD and 
                 position_distance > MotionDetectionConfig.MOVEMENT_THRESHOLD):
                 significant_movements += 1
-                total_duration += time_difference
+                total_duration += time_difference       # dianggap signifikan kalau memenuhi 2 diatas 
         
         return (significant_movements >= MotionDetectionConfig.MIN_MOVEMENT_POINTS and 
-                total_duration >= MotionDetectionConfig.DETECTION_DURATION)
+                total_duration >= MotionDetectionConfig.DETECTION_DURATION)     # dianggap detected kalau memenuhi 2 diatas
 
     def update_motion_detection(self, keypoints: Optional[np.ndarray]) -> None:
-        current_time = time.time()
+        current_time = time.time()      # real-time
         stable_keypoints = self.get_stable_keypoints(keypoints)
         
         self.keypoint_history.append(stable_keypoints)
@@ -197,7 +197,7 @@ class MotionTracker:
                 self.person_positions.append(center_point)
                 self.position_timestamps.append(current_time)
             
-            if self.stable_pose_count >= 5:
+            if self.stable_pose_count >= 5:     # 5 frame
                 if self.detect_skeleton_motion():
                     if not self.is_motion_detected:
                         self.motion_start_time = current_time
@@ -207,17 +207,17 @@ class MotionTracker:
                     
                     if ((self.motion_start_time is not None) and 
                         (current_time - self.motion_start_time) >= MotionDetectionConfig.DETECTION_DURATION):
-                        self.motion_triggered = True
+                        self.motion_triggered = True        # motion detection aktif jika pose stabil ≥5 frame dan stabil 
         
         else:
             self.person_detected = False
-            self.stable_pose_count = 0
+            self.stable_pose_count = 0      
             
             if (self.last_motion_time and 
                 current_time - self.last_motion_time > MotionDetectionConfig.MOTION_COOLDOWN):
                 self.is_motion_detected = False
                 self.motion_triggered = False
-                self.motion_start_time = None
+                self.motion_start_time = None       
 
 class SmartDevice:
     def __init__(self, name: str, gpio_pin: int):
