@@ -11,18 +11,6 @@ from datetime import datetime
 from collections import deque
 from typing import Dict, List, Optional, Tuple, Any
 
-class MQTTConfig:
-    BROKER = "w916a671.ala.asia-southeast1.emqxsl.com"
-    PORT = 8883
-    USERNAME = "cpsmagang"
-    PASSWORD = "cpsjaya123"
-    DEVICE_IP = "dmouv"
-    
-    STATUS_TOPIC = f"iot/{DEVICE_IP}/status"
-    SENSOR_TOPIC = f"iot/{DEVICE_IP}/sensor"
-    ACTION_TOPIC = f"iot/{DEVICE_IP}/action"
-    SETTINGS_UPDATE_TOPIC = f"iot/{DEVICE_IP}/settings/update"
-
 class CameraConfig:
     SOURCE = "usb0"
     RESOLUTION_WIDTH = 640
