@@ -7,36 +7,36 @@
 
 > **A cutting-edge IoT system that combines computer vision, skeletal pose estimation, and intelligent device control for automated smart home solutions.**
 
-## 🌟 Overview
+##  Overview
 
 The Smart Motion Detection System is an advanced IoT solution that uses YOLO11n pose estimation to detect and analyze human movement patterns in real-time. Unlike traditional motion detectors that rely on simple pixel changes, this system performs sophisticated skeletal analysis to distinguish between meaningful human activity and environmental noise, enabling precise automated control of smart home devices.
 
-## ✨ Key Features
+##  Key Features
 
-### 🎯 **Intelligent Motion Analysis**
+###  **Intelligent Motion Analysis**
 - **Advanced Pose Detection**: YOLO11n-based skeleton tracking with 17 keypoint analysis
 - **Smart Movement Filtering**: Distinguishes between meaningful motion and environmental noise
 - **Stability Analysis**: Multi-frame pose stability verification to prevent false triggers
 - **Relative Movement Calculation**: Normalized motion analysis independent of position in frame
 
-### 🏠 **Smart Device Integration**
+###  **Smart Device Integration**
 - **Multi-Device Control**: Automated control of lamps, fans, and other GPIO-connected devices
 - **Three Operation Modes**: Automatic, Manual, and Scheduled control
 - **Intelligent Auto-Off**: Configurable delay before devices turn off when no motion detected
 - **Real-time State Management**: Instant device status updates and feedback
 
-### 🌐 **IoT Connectivity**
+###  **IoT Connectivity**
 - **Secure MQTT Communication**: SSL/TLS encrypted messaging via EMQX Cloud
 - **Remote Device Control**: Control devices from anywhere via MQTT commands
 - **Real-time Status Updates**: Live motion detection and device status reporting
 - **Dynamic Configuration**: Update system parameters remotely without restart
 
-### 📊 **Performance Monitoring**
+###  **Performance Monitoring**
 - **Real-time FPS Display**: Live performance metrics and optimization
 - **Motion Analytics**: Detailed movement pattern analysis and reporting
 - **System Health Monitoring**: Comprehensive error handling and status reporting
 
-## 🏗️ System Architecture
+##  System Architecture
 
 ```mermaid
 graph TB
@@ -75,7 +75,7 @@ graph TB
     style K fill:#ff6b6b
 ```
 
-## 🚀 Quick Start Guide
+##  Quick Start Guide
 
 ### Prerequisites
 
@@ -131,7 +131,7 @@ class MQTTConfig:
 python3 AIoT-dmouv2025.py
 ```
 
-## ⚙️ Configuration Options
+##  Configuration Options
 
 ### Motion Detection Parameters
 
@@ -163,7 +163,7 @@ class CameraConfig:
     FPS_BUFFER_SIZE = 50         # FPS calculation buffer
 ```
 
-## 🎮 Operation Modes
+##  Operation Modes
 
 ### 1. **Automatic Mode** (Default)
 - Devices automatically activate when human motion is detected
@@ -183,7 +183,7 @@ class CameraConfig:
 - Supports different schedules for different devices
 - Format: `{"device": "lamp", "schedule_on": "18:00", "schedule_off": "23:00"}`
 
-## 🌐 MQTT Communication
+##  MQTT Communication
 
 ### Topic Structure
 
@@ -195,7 +195,7 @@ iot/{DEVICE_IP}/
 └── settings/update # Configuration updates
 ```
 
-## 🔬 Technical Deep Dive
+##  Technical Deep Dive
 
 ### Motion Detection Algorithm
 
@@ -238,7 +238,7 @@ class SmartMotionDetectionSystem:
     - Performance monitoring
 ```
 
-## 📊 Performance Optimization
+##  Performance Optimization
 
 ### Hardware Recommendations
 - **Raspberry Pi 5 (4GB+)**: Optimal performance for real-time processing
@@ -252,7 +252,7 @@ class SmartMotionDetectionSystem:
 - **Buffer Management**: Configurable FPS buffer for smooth performance
 - **Memory Management**: Efficient deque structures for historical data
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - **[Ultralytics](https://ultralytics.com/)**: For the excellent YOLO11n implementation
 - **[OpenCV Team](https://opencv.org/)**: For comprehensive computer vision tools
